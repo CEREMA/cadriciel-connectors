@@ -9,7 +9,7 @@ Chaque étape d'un workflow s'exécute dans son propre pod : un connecteur peut 
 n'importe quelle image.
 
 > **État : brouillon.** Le format est arrêté. La colonne « Essayé » dit ce qui a réellement tourné ;
-> seule « Requête HTTP » a tourné dans un workflow de la plateforme.
+> seule « Requête HTTP » a tourné dans un workflow de la plateforme (avec et sans identifiant).
 
 ## Connecteurs
 
@@ -61,7 +61,7 @@ credentials/<type>.json        un type d'identifiant : ses champs, son essai de 
 | `image` | L'image Docker du pod. |
 | `credential` | Le type d'identifiant réclamé (`optional` s'il est facultatif) et, pour chacun de ses champs, la variable d'environnement qui le reçoit. |
 | `parameters` | Les réglages de l'étape. L'éditeur en tire le formulaire. Chaque paramètre arrive au pod dans la variable nommée par `env`. |
-| `script`, `command` | Le script livré avec la fiche, monté dans le pod sous `/opt/cadriciel/`, et la commande qui le lance. |
+| `script`, `command` | Le script livré avec la fiche et la commande qui le lance. La plateforme dépose le script dans le volume de travail du pod et adapte le chemin : `/opt/cadriciel/` dans `command` est une convention d'écriture, pas un emplacement garanti. |
 | `produces` | Ce que le pod rend : un fichier par résultat, avec son type. |
 | `resources`, `timeout` | Limites du pod. |
 
