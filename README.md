@@ -104,3 +104,7 @@ pod lancé par « Tester la connexion » : il réussit si la commande sort avec 
 
 La plateforme ne lit pas la branche `main` : elle épingle une version publiée du catalogue. Une
 nouvelle version est d'abord prise par la plateforme de recette, puis promue en production.
+
+## Licence
+
+[MIT](LICENSE) — © 2026 Cerema.
