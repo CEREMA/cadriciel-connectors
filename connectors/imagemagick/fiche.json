@@ -1,0 +1,26 @@
+{
+  "id": "imagemagick",
+  "name": "ImageMagick",
+  "version": "0.1.0",
+  "description": "Traiter des images : redimensionner, convertir, assembler, appliquer des effets.",
+  "category": "media",
+  "icon": "image",
+  "color": "#c2410c",
+  "image": "dpokidov/imagemagick:7.1.1-47",
+  "parameters": [
+    { "key": "commands", "type": "code", "label": "Commandes", "required": true, "env": "CAD_COMMANDS",
+      "default": "magick /data/input/image.jpg -resize 400x400 /data/output/image.jpg" }
+  ],
+  "script": "run.sh",
+  "command": ["sh", "/opt/cadriciel/run.sh"],
+  "outputs": "custom",
+  "produces": [{ "key": "image", "type": "file", "path": "/data/output/image.jpg" }],
+  "examples": [
+    { "name": "Redimensionner à 400 px", "commands": "magick /data/input/image.jpg -resize 400x400 /data/output/image.jpg" },
+    { "name": "Convertir en PNG", "commands": "magick /data/input/image.jpg /data/output/image.png" },
+    { "name": "Vignette carrée recadrée", "commands": "magick /data/input/image.jpg -resize 200x200^ -gravity center -extent 200x200 /data/output/vignette.jpg" },
+    { "name": "Toutes les images d'un dossier", "commands": "mkdir -p /data/output/images\nfor f in /data/input/*.jpg; do magick \"$f\" -resize 800x800 \"/data/output/images/$(basename \"$f\")\"; done" }
+  ],
+  "resources": { "cpu": "500m", "memory": "512Mi" },
+  "timeout": 600
+}

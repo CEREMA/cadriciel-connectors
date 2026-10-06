@@ -1,0 +1,44 @@
+{
+  "id": "code-python",
+  "name": "Code Python",
+  "version": "0.1.0",
+  "description": "Écrire du code Python 3.12. Les données d'entrée sont dans « input » ; ce que le code affiche en JSON devient le résultat de l'étape.",
+  "category": "code",
+  "icon": "code",
+  "color": "#3776ab",
+  "kind": "code",
+  "image": "python:3.12-alpine",
+  "code": {
+    "language": "python",
+    "template": "# Les données d'entrée sont dans 'input' (dict)\n# Utilisez print() pour afficher ou return pour retourner\n\nimport json\nfrom datetime import datetime\n\nresult = {\n    'message': 'Hello from Python!',\n    'timestamp': datetime.now().isoformat(),\n    'input': input\n}\n\nprint(json.dumps(result))",
+    "dependencies": true
+  },
+  "env": {
+    "PYTHONUNBUFFERED": "1"
+  },
+  "produces": [
+    {
+      "key": "result",
+      "type": "json"
+    }
+  ],
+  "examples": [
+    {
+      "name": "Appel API REST",
+      "code": "import requests\nimport json\n\nresponse = requests.get('https://api.example.com/data')\nprint(json.dumps(response.json()))"
+    },
+    {
+      "name": "Traitement Pandas",
+      "code": "import pandas as pd\nimport json\n\ndf = pd.DataFrame(input['items'])\ngrouped = df.groupby('category').size().to_dict()\nprint(json.dumps({'grouped': grouped}))"
+    },
+    {
+      "name": "Analyse de texte",
+      "code": "import re\nimport json\n\ntext = input.get('text', '')\nwords = len(re.findall(r'\\w+', text))\nprint(json.dumps({'word_count': words}))"
+    }
+  ],
+  "resources": {
+    "cpu": "500m",
+    "memory": "512Mi"
+  },
+  "timeout": 600
+}

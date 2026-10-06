@@ -1,0 +1,18 @@
+{
+  "id": "mediainfo",
+  "name": "MediaInfo",
+  "version": "0.1.0",
+  "description": "Lire les caractéristiques d'un fichier vidéo, son ou image : durée, format, débit, dimensions.",
+  "category": "media",
+  "icon": "info",
+  "color": "#0e7490",
+  "image": "alpine:3.20",
+  "parameters": [
+    { "key": "file", "type": "text", "label": "Fichier", "required": true, "default": "/data/input/video.mp4", "env": "CAD_FILE" }
+  ],
+  "script": "run.sh",
+  "command": ["sh", "/opt/cadriciel/run.sh"],
+  "produces": [{ "key": "info", "type": "json", "path": "/data/output/info.json" }],
+  "resources": { "cpu": "200m", "memory": "256Mi" },
+  "timeout": 300
+}

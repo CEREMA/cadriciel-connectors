@@ -8,16 +8,25 @@ quel identifiant il faut ; la recette dit quelle image Docker lancer et comment 
 Chaque étape d'un workflow s'exécute dans son propre pod : un connecteur peut donc s'appuyer sur
 n'importe quelle image.
 
-> **État : brouillon.** Le format est arrêté. Les scripts ont été essayés un par un dans Docker ;
-> aucun connecteur n'a encore tourné dans un workflow de la plateforme.
+> **État : brouillon.** Le format est arrêté. La colonne « Essayé » dit ce qui a réellement tourné ;
+> seule « Requête HTTP » a tourné dans un workflow de la plateforme.
 
 ## Connecteurs
 
-| Connecteur | Identifiant | Image | Script essayé |
+| Connecteur | Sert à | Identifiant | Essayé |
 |---|---|---|---|
-| [PostgreSQL](connectors/postgres) | `postgres` | `postgres:16-alpine` | oui, contre une base PostgreSQL 16 |
-| [Requête HTTP](connectors/http-request) | `httpHeader` (facultatif) | `curlimages/curl` | oui, contre un serveur d'écho |
-| [OpenAI](connectors/openai) | `openai` | `oven/bun` | contre un faux service seulement, pas contre OpenAI |
+| [PostgreSQL](connectors/postgres) | Lire ou modifier une base par une requête SQL | `postgres` | script, contre une base PostgreSQL 16 |
+| [Requête HTTP](connectors/http-request) | Appeler une adresse HTTP | `httpHeader` (facultatif) | script, et dans un workflow de la plateforme |
+| [OpenAI](connectors/openai) | Envoyer un message à un modèle | `openai` | script, contre un faux service seulement |
+| [S3](connectors/s3) | Lire, déposer, synchroniser des fichiers | `s3` | non |
+| [FFmpeg](connectors/ffmpeg) | Traiter de la vidéo et du son | — | script, dans Docker |
+| [ImageMagick](connectors/imagemagick) | Traiter des images | — | script, dans Docker |
+| [MediaInfo](connectors/mediainfo) | Lire les caractéristiques d'un fichier média | — | script, dans Docker |
+| [Git clone](connectors/git-clone) | Récupérer un dépôt git public | — | script, dans Docker |
+| [Docker build](connectors/docker-build) | Construire une image Docker | — | non ; demande un pod privilégié |
+| [Envisaas (Envigis)](connectors/envisaas) | Traiter des données maritimes AIS | — | non |
+| [Code Bun](connectors/code-bun) | Écrire du code TypeScript ou JavaScript | — | repris de la plateforme, fiche pas encore branchée |
+| [Code Python](connectors/code-python) | Écrire du code Python | — | repris de la plateforme, fiche pas encore branchée |
 
 ## Organisation du dépôt
 
@@ -55,6 +64,20 @@ credentials/<type>.json        un type d'identifiant : ses champs, son essai de 
 | `script`, `command` | Le script livré avec la fiche, monté dans le pod sous `/opt/cadriciel/`, et la commande qui le lance. |
 | `produces` | Ce que le pod rend : un fichier par résultat, avec son type. |
 | `resources`, `timeout` | Limites du pod. |
+
+### Trois sortes de connecteurs
+
+- **À réglages** (PostgreSQL, Requête HTTP, OpenAI, MediaInfo, Git clone) : l'utilisateur remplit un
+  formulaire ; le script de la fiche fait le travail et rend des résultats fixés par la fiche.
+- **À commandes** (FFmpeg, ImageMagick, S3, Envisaas) : l'utilisateur écrit les commandes de
+  l'outil dans un réglage `commands`. Avec `"outputs": "custom"`, il déclare aussi lui-même les
+  fichiers que l'étape produit ; `produces` n'en donne alors que la proposition de départ, et
+  `examples` des commandes prêtes à reprendre.
+- **De code** (`"kind": "code"` : Code Bun, Code Python) : l'utilisateur écrit du code, exécuté par
+  la plateforme dans l'image de la fiche. `code` donne le langage et le modèle de départ.
+
+`requires` signale ce qu'un connecteur exige de la plateforme (par exemple un pod privilégié) :
+elle peut refuser de le lancer.
 
 ### Types de paramètres
 

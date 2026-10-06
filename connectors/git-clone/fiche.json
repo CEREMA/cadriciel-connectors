@@ -1,0 +1,23 @@
+{
+  "id": "git-clone",
+  "name": "Git clone",
+  "version": "0.1.0",
+  "description": "Récupérer le contenu d'un dépôt git public, pour le traiter dans les étapes suivantes.",
+  "category": "source",
+  "icon": "git-branch",
+  "color": "#f05133",
+  "image": "alpine/git:2.47.2",
+  "parameters": [
+    { "key": "repository", "type": "text", "label": "Adresse du dépôt", "required": true, "env": "CAD_REPOSITORY" },
+    { "key": "ref", "type": "text", "label": "Branche ou étiquette", "env": "CAD_REF" },
+    { "key": "depth", "type": "number", "label": "Profondeur de l'historique", "default": 1, "min": 0, "max": 10000, "env": "CAD_DEPTH" }
+  ],
+  "script": "run.sh",
+  "command": ["sh", "/opt/cadriciel/run.sh"],
+  "produces": [
+    { "key": "repo", "type": "dir", "path": "/data/output/repo" },
+    { "key": "commit", "type": "text", "path": "/data/output/commit" }
+  ],
+  "resources": { "cpu": "200m", "memory": "256Mi" },
+  "timeout": 600
+}

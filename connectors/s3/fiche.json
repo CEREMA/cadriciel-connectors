@@ -1,0 +1,30 @@
+{
+  "id": "s3",
+  "name": "S3",
+  "version": "0.1.0",
+  "description": "Lire, déposer et synchroniser des fichiers dans un stockage compatible S3.",
+  "category": "storage",
+  "icon": "hard-drive",
+  "color": "#e0803a",
+  "image": "amazon/aws-cli:2.22.35",
+  "credential": {
+    "type": "s3",
+    "env": { "AWS_ACCESS_KEY_ID": "accessKey", "AWS_SECRET_ACCESS_KEY": "secretKey", "AWS_DEFAULT_REGION": "region", "AWS_ENDPOINT_URL": "endpoint", "CAD_S3_BUCKET": "bucket" }
+  },
+  "parameters": [
+    { "key": "commands", "type": "code", "label": "Commandes", "required": true, "env": "CAD_COMMANDS",
+      "default": "aws s3 ls \"s3://$CAD_S3_BUCKET/\"" }
+  ],
+  "script": "run.sh",
+  "command": ["sh", "/opt/cadriciel/run.sh"],
+  "outputs": "custom",
+  "produces": [],
+  "examples": [
+    { "name": "Lister l'espace", "commands": "aws s3 ls \"s3://$CAD_S3_BUCKET/\"" },
+    { "name": "Déposer un fichier", "commands": "aws s3 cp /data/input/rapport.pdf \"s3://$CAD_S3_BUCKET/rapports/rapport.pdf\"" },
+    { "name": "Récupérer un fichier", "commands": "aws s3 cp \"s3://$CAD_S3_BUCKET/rapports/rapport.pdf\" /data/output/rapport.pdf" },
+    { "name": "Synchroniser un dossier", "commands": "aws s3 sync /data/input/images \"s3://$CAD_S3_BUCKET/images/\"" }
+  ],
+  "resources": { "cpu": "200m", "memory": "512Mi" },
+  "timeout": 1800
+}

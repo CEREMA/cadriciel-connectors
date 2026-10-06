@@ -1,0 +1,21 @@
+{
+  "id": "docker-build",
+  "name": "Docker build",
+  "version": "0.1.0",
+  "description": "Construire une image Docker à partir d'un dossier et de son Dockerfile.",
+  "category": "container",
+  "icon": "box",
+  "color": "#1d63ed",
+  "image": "docker:27-dind",
+  "parameters": [
+    { "key": "context", "type": "text", "label": "Dossier à construire", "required": true, "default": "/data/input/repo", "env": "CAD_CONTEXT" },
+    { "key": "dockerfile", "type": "text", "label": "Dockerfile", "default": "Dockerfile", "env": "CAD_DOCKERFILE" },
+    { "key": "tag", "type": "text", "label": "Nom de l'image", "required": true, "env": "CAD_TAG" }
+  ],
+  "script": "run.sh",
+  "command": ["sh", "/opt/cadriciel/run.sh"],
+  "produces": [{ "key": "imageId", "type": "text", "path": "/data/output/image-id" }],
+  "requires": { "privileged": true },
+  "resources": { "cpu": "1000m", "memory": "2Gi" },
+  "timeout": 3600
+}

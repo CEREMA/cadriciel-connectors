@@ -1,0 +1,44 @@
+{
+  "id": "code-bun",
+  "name": "Code Bun",
+  "version": "0.1.0",
+  "description": "Écrire du code TypeScript ou JavaScript, exécuté par Bun. Les données d'entrée sont dans « input » ; ce que le code retourne devient le résultat de l'étape.",
+  "category": "code",
+  "icon": "code",
+  "color": "#f472b6",
+  "kind": "code",
+  "image": "oven/bun:1.1-alpine",
+  "code": {
+    "language": "typescript",
+    "template": "// Les données d'entrée sont dans 'input'\n// Retournez le résultat avec 'return'\n// Bun supporte TypeScript nativement!\n\ninterface Result {\n  message: string;\n  timestamp: string;\n  input: unknown;\n}\n\nconst result: Result = {\n  message: 'Hello from Bun!',\n  timestamp: new Date().toISOString(),\n  input\n};\n\nreturn result;",
+    "dependencies": true
+  },
+  "env": {
+    "BUN_ENV": "production"
+  },
+  "produces": [
+    {
+      "key": "result",
+      "type": "json"
+    }
+  ],
+  "examples": [
+    {
+      "name": "Fetch API (natif)",
+      "code": "const response = await fetch('https://api.example.com/data');\nconst data = await response.json();\nreturn data;"
+    },
+    {
+      "name": "Lecture fichier (Bun API)",
+      "code": "const file = Bun.file('/data/input.json');\nconst content = await file.json();\nreturn content;"
+    },
+    {
+      "name": "Validation avec Zod",
+      "code": "import { z } from 'zod';\n\nconst schema = z.object({\n  name: z.string(),\n  age: z.number()\n});\n\nconst validated = schema.parse(input);\nreturn { valid: true, data: validated };"
+    }
+  ],
+  "resources": {
+    "cpu": "500m",
+    "memory": "512Mi"
+  },
+  "timeout": 600
+}

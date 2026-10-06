@@ -1,0 +1,23 @@
+{
+  "id": "envisaas",
+  "name": "Envisaas (Envigis)",
+  "version": "0.1.0",
+  "description": "Traiter et cartographier des données maritimes AIS avec Envigis.",
+  "category": "geo",
+  "icon": "map",
+  "color": "#0369a1",
+  "image": "cerema/envisaas:latest",
+  "parameters": [
+    { "key": "commands", "type": "code", "label": "Commandes", "required": true, "env": "CAD_COMMANDS",
+      "default": "envigis-cli -i /data/input/job.xml" }
+  ],
+  "script": "run.sh",
+  "command": ["sh", "/opt/cadriciel/run.sh"],
+  "outputs": "custom",
+  "produces": [
+    { "key": "map", "type": "file", "path": "/data/output/output.png" },
+    { "key": "data", "type": "file", "path": "/data/output/output.csv" }
+  ],
+  "resources": { "cpu": "1000m", "memory": "2Gi" },
+  "timeout": 3600
+}

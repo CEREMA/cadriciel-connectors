@@ -1,0 +1,26 @@
+{
+  "id": "ffmpeg",
+  "name": "FFmpeg",
+  "version": "0.1.0",
+  "description": "Traiter de la vidéo et du son : convertir, encoder, couper, assembler.",
+  "category": "media",
+  "icon": "film",
+  "color": "#3a7d44",
+  "image": "jrottenberg/ffmpeg:5-alpine",
+  "parameters": [
+    { "key": "commands", "type": "code", "label": "Commandes", "required": true, "env": "CAD_COMMANDS",
+      "default": "ffmpeg -y -i /data/input/video.mp4 -c:v libx264 -preset fast /data/output/video.mp4" }
+  ],
+  "script": "run.sh",
+  "command": ["sh", "/opt/cadriciel/run.sh"],
+  "outputs": "custom",
+  "produces": [{ "key": "video", "type": "file", "path": "/data/output/video.mp4" }],
+  "examples": [
+    { "name": "Convertir en MP4 (H.264)", "commands": "ffmpeg -y -i /data/input/video.mov -c:v libx264 -preset fast -c:a aac /data/output/video.mp4" },
+    { "name": "Extraire le son", "commands": "ffmpeg -y -i /data/input/video.mp4 -vn -c:a libmp3lame /data/output/son.mp3" },
+    { "name": "Couper de 0:10 à 0:40", "commands": "ffmpeg -y -ss 00:00:10 -to 00:00:40 -i /data/input/video.mp4 -c copy /data/output/extrait.mp4" },
+    { "name": "Une image toutes les 10 secondes", "commands": "mkdir -p /data/output/images\nffmpeg -y -i /data/input/video.mp4 -vf fps=1/10 /data/output/images/image-%03d.jpg" }
+  ],
+  "resources": { "cpu": "1000m", "memory": "1Gi" },
+  "timeout": 1800
+}
