@@ -1,0 +1,29 @@
+{
+  "id": "postgres",
+  "name": "PostgreSQL",
+  "version": "0.1.0",
+  "description": "Lire ou modifier une base PostgreSQL par une requête SQL.",
+  "category": "data",
+  "icon": "database",
+  "color": "#336791",
+  "image": "postgres:16-alpine",
+  "credential": {
+    "type": "postgres",
+    "env": { "PGHOST": "host", "PGPORT": "port", "PGDATABASE": "database", "PGUSER": "user", "PGPASSWORD": "password", "PGSSLMODE": "sslmode" }
+  },
+  "parameters": [
+    { "key": "operation", "type": "choice", "label": "Opération", "default": "query", "env": "CAD_OPERATION",
+      "options": [{ "value": "query", "label": "Lire" }, { "value": "execute", "label": "Modifier" }] },
+    { "key": "query", "type": "sql", "label": "Requête", "required": true, "env": "CAD_QUERY" },
+    { "key": "limit", "type": "number", "label": "Lignes au plus", "default": 1000, "min": 1, "max": 100000, "env": "CAD_LIMIT", "showIf": { "operation": "query" } },
+    { "key": "transaction", "type": "boolean", "label": "Dans une transaction", "default": true, "env": "CAD_TRANSACTION", "showIf": { "operation": "execute" } }
+  ],
+  "script": "run.sh",
+  "command": ["sh", "/opt/cadriciel/run.sh"],
+  "produces": [
+    { "key": "rows", "type": "json", "path": "/data/output/rows.json" },
+    { "key": "count", "type": "number", "path": "/data/output/count" }
+  ],
+  "resources": { "cpu": "100m", "memory": "128Mi" },
+  "timeout": 300
+}

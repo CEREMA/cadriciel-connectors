@@ -1,0 +1,27 @@
+{
+  "id": "openai",
+  "name": "OpenAI",
+  "version": "0.1.0",
+  "description": "Envoyer un message à un modèle d'OpenAI et récupérer sa réponse.",
+  "category": "ai",
+  "icon": "sparkles",
+  "color": "#10a37f",
+  "image": "oven/bun:1.1-alpine",
+  "credential": { "type": "openai", "env": { "OPENAI_API_KEY": "apiKey", "OPENAI_BASE_URL": "baseUrl" } },
+  "parameters": [
+    { "key": "model", "type": "text", "label": "Modèle", "default": "gpt-4o-mini", "required": true, "env": "CAD_MODEL" },
+    { "key": "system", "type": "code", "label": "Consigne", "env": "CAD_SYSTEM" },
+    { "key": "prompt", "type": "code", "label": "Message", "required": true, "env": "CAD_PROMPT" },
+    { "key": "json", "type": "boolean", "label": "Réponse en JSON", "default": false, "env": "CAD_JSON" },
+    { "key": "temperature", "type": "number", "label": "Température", "min": 0, "max": 2, "env": "CAD_TEMPERATURE" },
+    { "key": "maxTokens", "type": "number", "label": "Longueur maximale de la réponse", "min": 1, "max": 32000, "env": "CAD_MAX_TOKENS" }
+  ],
+  "script": "run.ts",
+  "command": ["bun", "/opt/cadriciel/run.ts"],
+  "produces": [
+    { "key": "text", "type": "text", "path": "/data/output/text" },
+    { "key": "usage", "type": "json", "path": "/data/output/usage.json" }
+  ],
+  "resources": { "cpu": "100m", "memory": "128Mi" },
+  "timeout": 180
+}

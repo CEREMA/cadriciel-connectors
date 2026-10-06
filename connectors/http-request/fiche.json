@@ -1,0 +1,27 @@
+{
+  "id": "http-request",
+  "name": "Requête HTTP",
+  "version": "0.1.0",
+  "description": "Appeler une adresse HTTP et récupérer sa réponse.",
+  "category": "network",
+  "icon": "globe",
+  "color": "#7a5af8",
+  "image": "curlimages/curl:8.10.1",
+  "credential": { "type": "httpHeader", "optional": true, "env": { "CAD_AUTH_NAME": "name", "CAD_AUTH_VALUE": "value" } },
+  "parameters": [
+    { "key": "method", "type": "choice", "label": "Méthode", "default": "GET", "options": ["GET", "POST", "PUT", "PATCH", "DELETE"], "env": "CAD_METHOD" },
+    { "key": "url", "type": "text", "label": "Adresse", "required": true, "env": "CAD_URL" },
+    { "key": "headers", "type": "pairs", "label": "En-têtes", "env": "CAD_HEADERS" },
+    { "key": "body", "type": "code", "label": "Corps", "env": "CAD_BODY", "showIf": { "method": ["POST", "PUT", "PATCH"] } },
+    { "key": "failOnError", "type": "boolean", "label": "Échouer si le serveur répond 4xx ou 5xx", "default": true, "env": "CAD_FAIL_ON_ERROR" },
+    { "key": "timeoutSeconds", "type": "number", "label": "Délai de réponse (s)", "default": 30, "min": 1, "max": 300, "env": "CAD_TIMEOUT" }
+  ],
+  "script": "run.sh",
+  "command": ["sh", "/opt/cadriciel/run.sh"],
+  "produces": [
+    { "key": "body", "type": "text", "path": "/data/output/body" },
+    { "key": "status", "type": "number", "path": "/data/output/status" }
+  ],
+  "resources": { "cpu": "50m", "memory": "64Mi" },
+  "timeout": 330
+}
