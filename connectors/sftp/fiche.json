@@ -1,0 +1,31 @@
+{
+  "id": "sftp",
+  "name": "SFTP",
+  "version": "0.1.0",
+  "description": "Déposer, récupérer et synchroniser des fichiers sur un serveur SFTP.",
+  "category": "storage",
+  "icon": "hard-drive",
+  "color": "#4a6fa5",
+  "image": "rclone/rclone:1.68.2",
+  "credential": {
+    "type": "sftp",
+    "env": { "CAD_SFTP_HOST": "host", "CAD_SFTP_PORT": "port", "CAD_SFTP_USER": "user", "CAD_SFTP_PASSWORD": "password", "CAD_SFTP_KEY": "privateKey" }
+  },
+  "parameters": [
+    { "key": "commands", "type": "code", "label": "Commandes", "required": true, "env": "CAD_COMMANDS",
+      "default": "rclone lsf sftp:" }
+  ],
+  "script": "run.sh",
+  "command": ["sh", "/opt/cadriciel/run.sh"],
+  "outputs": "custom",
+  "produces": [],
+  "examples": [
+    { "name": "Lister un dossier", "commands": "rclone lsf sftp:depot/" },
+    { "name": "Déposer un fichier", "commands": "rclone copy /data/input/rapport.pdf sftp:depot/rapports/" },
+    { "name": "Récupérer un fichier", "commands": "rclone copy sftp:depot/rapports/rapport.pdf /data/output/" },
+    { "name": "Récupérer un dossier", "commands": "rclone copy sftp:depot/images /data/output/images" },
+    { "name": "Synchroniser un dossier vers le serveur", "commands": "rclone sync /data/input/images sftp:depot/images" }
+  ],
+  "resources": { "cpu": "200m", "memory": "256Mi" },
+  "timeout": 1800
+}

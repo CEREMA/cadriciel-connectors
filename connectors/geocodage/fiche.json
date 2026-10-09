@@ -1,0 +1,32 @@
+{
+  "id": "geocodage",
+  "name": "Géocodage",
+  "version": "0.1.0",
+  "description": "Trouver les coordonnées d'une adresse, ou l'adresse d'un point, avec le service de la Géoplateforme (IGN).",
+  "category": "geo",
+  "icon": "map-pin",
+  "color": "#0369a1",
+  "image": "curlimages/curl:8.10.1",
+  "parameters": [
+    { "key": "operation", "type": "choice", "label": "Opération", "default": "address", "env": "CAD_OPERATION",
+      "options": [
+        { "value": "address", "label": "Une adresse" },
+        { "value": "csv", "label": "Un fichier d'adresses (CSV)" },
+        { "value": "reverse", "label": "Un fichier de points (CSV) vers des adresses" }
+      ] },
+    { "key": "address", "type": "text", "label": "Adresse", "required": true, "env": "CAD_ADDRESS", "showIf": { "operation": "address" } },
+    { "key": "file", "type": "text", "label": "Fichier", "default": "/data/input/adresses.csv", "env": "CAD_FILE", "showIf": { "operation": ["csv", "reverse"] } },
+    { "key": "columns", "type": "text", "label": "Colonnes de l'adresse", "default": "adresse", "env": "CAD_COLUMNS", "showIf": { "operation": "csv" } },
+    { "key": "postcode", "type": "text", "label": "Colonne du code postal", "env": "CAD_POSTCODE", "showIf": { "operation": "csv" } },
+    { "key": "citycode", "type": "text", "label": "Colonne du code INSEE", "env": "CAD_CITYCODE", "showIf": { "operation": "csv" } },
+    { "key": "timeoutSeconds", "type": "number", "label": "Délai de réponse (s)", "default": 120, "min": 1, "max": 1700, "env": "CAD_TIMEOUT" }
+  ],
+  "script": "run.sh",
+  "command": ["sh", "/opt/cadriciel/run.sh"],
+  "produces": [
+    { "key": "adresses", "type": "file", "path": "/data/output/adresses.csv" },
+    { "key": "count", "type": "number", "path": "/data/output/count" }
+  ],
+  "resources": { "cpu": "100m", "memory": "128Mi" },
+  "timeout": 1800
+}

@@ -21,6 +21,8 @@ n'importe quelle image.
 | [OpenAI](connectors/openai) | Envoyer un message à un modèle | `openai` | script, contre un faux service seulement |
 | [S3](connectors/s3) | Lire, déposer, synchroniser des fichiers | `s3` | dans un workflow de la plateforme, contre un stockage S3 simulé |
 | [GDAL](connectors/gdal) | Convertir des données géographiques : format, système de coordonnées | — | script, dans l'image du connecteur (hors plateforme) : GeoJSON, GeoPackage, Shapefile, CSV, liste de coordonnées |
+| [Géocodage](connectors/geocodage) | Trouver les coordonnées d'adresses, ou l'adresse de points (Géoplateforme IGN) | — | script, dans l'image du connecteur contre le service réel (hors plateforme) : une adresse, un fichier, des points |
+| [SFTP](connectors/sftp) | Déposer, récupérer, synchroniser des fichiers sur un serveur SFTP | `sftp` | script et essai de connexion, dans l'image du connecteur contre un serveur SFTP (hors plateforme), par mot de passe ; pas par clé |
 | [FFmpeg](connectors/ffmpeg) | Traiter de la vidéo et du son | — | dans un workflow de la plateforme |
 | [ImageMagick](connectors/imagemagick) | Traiter des images | — | dans un workflow de la plateforme |
 | [MediaInfo](connectors/mediainfo) | Lire les caractéristiques d'un fichier média | — | dans un workflow de la plateforme |
@@ -69,9 +71,9 @@ credentials/<type>.json        un type d'identifiant : ses champs, son essai de 
 
 ### Trois sortes de connecteurs
 
-- **À réglages** (PostgreSQL, Requête HTTP, OpenAI, MediaInfo, Git clone) : l'utilisateur remplit un
+- **À réglages** (PostgreSQL, MySQL, Requête HTTP, Géocodage, OpenAI, MediaInfo, Git clone) : l'utilisateur remplit un
   formulaire ; le script de la fiche fait le travail et rend des résultats fixés par la fiche.
-- **À commandes** (FFmpeg, ImageMagick, S3, Envisaas) : l'utilisateur écrit les commandes de
+- **À commandes** (FFmpeg, ImageMagick, GDAL, S3, SFTP, Envisaas) : l'utilisateur écrit les commandes de
   l'outil dans un réglage `commands`. Avec `"outputs": "custom"`, il déclare aussi lui-même les
   fichiers que l'étape produit ; `produces` n'en donne alors que la proposition de départ, et
   `examples` des commandes prêtes à reprendre.
