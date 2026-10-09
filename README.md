@@ -19,6 +19,7 @@ n'importe quelle image.
 | [Requête HTTP](connectors/http-request) | Appeler une adresse HTTP | `httpHeader` (facultatif) | dans un workflow de la plateforme, avec et sans identifiant |
 | [OpenAI](connectors/openai) | Envoyer un message à un modèle | `openai` | script, contre un faux service seulement |
 | [S3](connectors/s3) | Lire, déposer, synchroniser des fichiers | `s3` | dans un workflow de la plateforme, contre un stockage S3 simulé |
+| [GDAL](connectors/gdal) | Convertir des données géographiques : format, système de coordonnées | — | script, dans l'image du connecteur (hors plateforme) : GeoJSON, GeoPackage, Shapefile, CSV, liste de coordonnées |
 | [FFmpeg](connectors/ffmpeg) | Traiter de la vidéo et du son | — | dans un workflow de la plateforme |
 | [ImageMagick](connectors/imagemagick) | Traiter des images | — | dans un workflow de la plateforme |
 | [MediaInfo](connectors/mediainfo) | Lire les caractéristiques d'un fichier média | — | dans un workflow de la plateforme |

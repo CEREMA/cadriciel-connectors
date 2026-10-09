@@ -1,0 +1,28 @@
+{
+  "id": "gdal",
+  "name": "GDAL",
+  "version": "0.1.0",
+  "description": "Convertir des données géographiques : changer de format, de système de coordonnées, ou les deux.",
+  "category": "geo",
+  "icon": "map",
+  "color": "#5b8c3a",
+  "image": "ghcr.io/osgeo/gdal:alpine-small-3.9.2",
+  "parameters": [
+    { "key": "commands", "type": "code", "label": "Commandes", "required": true, "env": "CAD_COMMANDS",
+      "default": "ogr2ogr -t_srs EPSG:2154 /data/output/donnees.gpkg /data/input/donnees.geojson" }
+  ],
+  "script": "run.sh",
+  "command": ["sh", "/opt/cadriciel/run.sh"],
+  "outputs": "custom",
+  "produces": [{ "key": "donnees", "type": "file", "path": "/data/output/donnees.gpkg" }],
+  "examples": [
+    { "name": "Passer en Lambert-93 (GeoPackage)", "commands": "ogr2ogr -t_srs EPSG:2154 /data/output/donnees.gpkg /data/input/donnees.geojson" },
+    { "name": "Shapefile vers GeoJSON en WGS 84", "commands": "ogr2ogr -f GeoJSON -t_srs EPSG:4326 /data/output/donnees.geojson /data/input/donnees.shp" },
+    { "name": "CSV de points (colonnes x, y en Lambert-93) vers GeoJSON WGS 84", "commands": "ogr2ogr -f GeoJSON -s_srs EPSG:2154 -t_srs EPSG:4326 -oo X_POSSIBLE_NAMES=x -oo Y_POSSIBLE_NAMES=y /data/output/points.geojson /data/input/points.csv" },
+    { "name": "Convertir une liste de coordonnées (WGS 84 vers Lambert-93)", "commands": "cs2cs EPSG:4326 EPSG:2154 -f '%.3f' /data/input/coordonnees.txt > /data/output/coordonnees.txt" },
+    { "name": "Décrire un fichier", "commands": "ogrinfo -so -al /data/input/donnees.gpkg > /data/output/description.txt" },
+    { "name": "Reprojeter une image (GeoTIFF)", "commands": "gdalwarp -t_srs EPSG:2154 /data/input/image.tif /data/output/image.tif" }
+  ],
+  "resources": { "cpu": "1000m", "memory": "1Gi" },
+  "timeout": 1800
+}
