@@ -1,7 +1,7 @@
 #!/bin/sh
 # Connecteur SFTP. Le serveur vient des variables CAD_SFTP_* (identifiant) ; elles deviennent la
 # destination « sftp: » de rclone, que l'utilisateur emploie dans ses commandes. Le mot de passe
-# et la clé ne passent que par l'environnement, jamais par la ligne de commande.
+# et la clé ne passent que par l'environnement et l'entrée standard, jamais par une ligne de commande.
 set -eu
 
 : "${CAD_COMMANDS:?commandes manquantes}"
@@ -22,7 +22,7 @@ export RCLONE_CONFIG_SFTP_USER="$CAD_SFTP_USER"
 export RCLONE_CONFIG_SFTP_PORT="$PORT"
 # rclone attend un mot de passe « obscurci » dans sa configuration
 if [ -n "${CAD_SFTP_PASSWORD:-}" ]; then
-  RCLONE_CONFIG_SFTP_PASS=$(rclone obscure "$CAD_SFTP_PASSWORD"); export RCLONE_CONFIG_SFTP_PASS
+  RCLONE_CONFIG_SFTP_PASS=$(printf '%s' "$CAD_SFTP_PASSWORD" | rclone obscure -); export RCLONE_CONFIG_SFTP_PASS
 fi
 if [ -n "${CAD_SFTP_KEY:-}" ]; then export RCLONE_CONFIG_SFTP_KEY_PEM="$CAD_SFTP_KEY"; fi
 

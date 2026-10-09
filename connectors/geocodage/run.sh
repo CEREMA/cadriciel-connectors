@@ -1,8 +1,8 @@
 #!/bin/sh
 # Connecteur Géocodage : service de géocodage de la Géoplateforme (IGN), sans clé.
 # Dans tous les cas le résultat est un fichier CSV : les lignes reçues, complétées des colonnes
-# trouvées par le service. Aucune valeur saisie n'est interprétée par le shell : elles ne partent
-# que comme champs du formulaire envoyé par curl.
+# trouvées par le service. Aucune valeur saisie n'est interprétée, ni par le shell ni par curl :
+# elles ne partent que comme champs littéraux du formulaire.
 set -eu
 
 BASE="${CAD_GEOCODE_URL:-https://data.geopf.fr/geocodage}"
@@ -15,14 +15,15 @@ mkdir -p "$OUT"
 RESULT="$OUT/adresses.csv"
 WORK="${TMPDIR:-/tmp}/cad-geocodage.csv"
 
-# Une colonne par ligne dans le fichier de configuration de curl : form = "columns=<nom>"
+# Une colonne par ligne dans le fichier de configuration de curl. « form-string » et non « form » :
+# avec « form », un nom commençant par @ ou < ferait envoyer par curl un fichier du pod.
 CONF="${TMPDIR:-/tmp}/cad-geocodage.conf"
 : > "$CONF"
 add_columns() { # $1 = nom du champ du service, $2 = liste séparée par des virgules
   printf '%s' "$2" | tr ',' '\n' | while IFS= read -r column; do
     column=$(printf '%s' "$column" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
     [ -n "$column" ] || continue
-    printf 'form = "%s=%s"\n' "$1" "$(printf '%s' "$column" | sed -e 's/\\/\\\\/g' -e 's/"/\\"/g')" >> "$CONF"
+    printf 'form-string = "%s=%s"\n' "$1" "$(printf '%s' "$column" | sed -e 's/\\/\\\\/g' -e 's/"/\\"/g')" >> "$CONF"
   done
 }
 
