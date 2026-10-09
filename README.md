@@ -16,6 +16,7 @@ n'importe quelle image.
 | Connecteur | Sert à | Identifiant | Essayé |
 |---|---|---|---|
 | [PostgreSQL](connectors/postgres) | Lire ou modifier une base par une requête SQL | `postgres` | dans un workflow de la plateforme, contre une base PostgreSQL 16 |
+| [MySQL](connectors/mysql) | Lire ou modifier une base MySQL ou MariaDB par une requête SQL | `mysql` | script et essai de connexion, dans l'image du connecteur contre un serveur MySQL 8.4 (hors plateforme) |
 | [Requête HTTP](connectors/http-request) | Appeler une adresse HTTP | `httpHeader` (facultatif) | dans un workflow de la plateforme, avec et sans identifiant |
 | [OpenAI](connectors/openai) | Envoyer un message à un modèle | `openai` | script, contre un faux service seulement |
 | [S3](connectors/s3) | Lire, déposer, synchroniser des fichiers | `s3` | dans un workflow de la plateforme, contre un stockage S3 simulé |
